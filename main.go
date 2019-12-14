@@ -8,12 +8,14 @@ import (
 	"net/http"
 	"os"
 
-	msserial "github.com/boxidau/megasquirt-logger/internal"
+	"github.com/boxidau/megasquirt-logger/lib/msdecoder"
+	"github.com/boxidau/megasquirt-logger/lib/msserial"
 	"github.com/golang/glog"
 )
 
 var addr = flag.String("addr", ":8080", "WS server address")
 var port = flag.String("port", "", "Serial port to comminicate with MS")
+var configFile = flag.String("config-file", "config/mainController.ini", "Megasquirt INI file")
 
 func usage() {
 	flag.PrintDefaults()
@@ -31,6 +33,8 @@ func main() {
 
 	outputStr := ""
 	dataChan := msserial.MakeSerialProducer(*port)
+
+	msdecoder.New(*configFile)
 
 	go func() {
 		for data := range dataChan {
