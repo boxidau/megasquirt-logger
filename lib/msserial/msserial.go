@@ -43,7 +43,6 @@ func MakeSerialProducer(port string) chan []byte {
 			time.Sleep(time.Second * 2)
 			errorAttempts := 0
 			for {
-				time.Sleep(time.Millisecond * 100)
 				data, err := FetchRealtimeData(serialPort)
 				if err != nil {
 					glog.Error("Data fetch error: ", err)
@@ -53,6 +52,7 @@ func MakeSerialProducer(port string) chan []byte {
 					}
 				}
 				dataChannel <- data
+				time.Sleep(time.Millisecond * 4000)
 			}
 
 			glog.Warning("Serial failure, resetting serial connection...")

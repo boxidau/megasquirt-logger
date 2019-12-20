@@ -34,10 +34,19 @@ func main() {
 	outputStr := ""
 	dataChan := msserial.MakeSerialProducer(*port)
 
-	msdecoder.New(*configFile)
+	decoder := msdecoder.New(*configFile)
+	//outputChannels, _ := decoder.OutputChannelExtractors()
+	decoder.LogItemExtractors()
 
 	go func() {
 		for data := range dataChan {
+			// for _, outputChannel := range outputChannels {
+			// 	//value := outputChannel.Extractor(data)
+			// 	// glog.Infof(
+			// 	// 	"Channel: %s\t\tValue: %.2f\t\tUnit: %s",
+			// 	// 	outputChannel.Name, value, outputChannel.Unit,
+			// 	// )
+			// }
 			outputStr = hex.Dump(data)
 		}
 	}()
